@@ -74,6 +74,7 @@ def createSegment(a,b,c,i):
     C_seg=[z]
     #r defines maximum distance between two points while still being continuous
     r=10
+    #extend segment while subsequent points are within r of each other
     while calcDistance(x,y,x2,y2) < r and i<len(a)-2:
         i=i+1
         x,y,z=a[i],b[i],c[i]
@@ -81,8 +82,10 @@ def createSegment(a,b,c,i):
         A_seg.append(x)
         B_seg.append(y)
         C_seg.append(z)
+    #Once the next point is outside of r, return the segment
     return A_seg,B_seg,C_seg
-    
+
+#returns Euclidean distance between (x,y) and (x2,y2)
 def calcDistance(x,y,x2,y2):
     return sqrt((x-x2)**2 + (y-y2)**2)
 
