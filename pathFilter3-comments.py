@@ -41,13 +41,20 @@ def setTemp(A,b,c): #call with (X[i],xmin,xmax)
     return temps_continuous,temps_discreet
 
 def pathFilter3(a,b,c,d):
+    #a,b,c are the x,y,speed lists
+    #d is fishID
+
+    #create empty lists for reconstructed path
     A = []
     B = []
     C = []
     i=0
     l = 20
+    #iterate through entire length of a (a,b,c have same length)
     while i<len(a)-l:
+        #createSegment returns continuous path segment starting at i
         A_seg,B_seg,C_seg = createSegment(a,b,c,i)
+        #segment is added to path if long enough
         if len(A_seg)>=l:
             A = A + A_seg
             B = B + B_seg
@@ -57,12 +64,17 @@ def pathFilter3(a,b,c,d):
     return A,B,C
         
 def createSegment(a,b,c,i):
+    #a,b,c are x,y,speed lists
+
+    #initialize segment with data point at i
     x,y,z=a[i],b[i],c[i]
     x2,y2=a[i+1],b[i+1]
     A_seg=[x]
     B_seg=[y]
     C_seg=[z]
-    while calcDistance(x,y,x2,y2) < 10 and i<len(a)-2:
+    #r defines maximum distance between two points while still being continuous
+    r=10
+    while calcDistance(x,y,x2,y2) < r and i<len(a)-2:
         i=i+1
         x,y,z=a[i],b[i],c[i]
         x2,y2=a[i+1],b[i+1]
